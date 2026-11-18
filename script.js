@@ -1,74 +1,88 @@
-const translations = {
-  vi: {
-    navProjects: "Dự án", navCapabilities: "Năng lực", navExperience: "Nền tảng", navContact: "Liên hệ", downloadCV: "Tải CV",
-    availability: "Đang tìm cơ hội thực tập Embedded & IoT",
-    heroTitle: "Tôi xây dựng hệ thống nhúng có thể kiểm thử, đo lường và giải thích.",
-    heroLede: "Sinh viên Công nghệ Kỹ thuật Máy tính tập trung vào giao tiếp thiết bị BLE, mạng cảm biến có cơ chế dự phòng và HW/SW co-design trên FPGA.",
-    exploreWork: "Xem dự án", gradLabel: "Dự kiến tốt nghiệp", educationLabel: "Kỹ thuật Máy tính", locationLabel: "Sinh sống tại Việt Nam",
-    metricBoards: "bo ESP32 đã kiểm thử", metricPacket: "định dạng gói dữ liệu", metricThroughput: "thông lượng lõi RTL tại 100 MHz", metricVectors: "vector AES đã xác minh",
-    projectsTitle: "Hai hệ thống tôi có thể trình bày từ kiến trúc đến kiểm thử.",
-    projectsIntro: "Trọng tâm không phải danh sách công nghệ dài. Đó là quyết định thiết kế, trường hợp lỗi, phép đo và kết quả phần cứng tôi có thể giải thích.",
-    wsnSummary: "Triển khai và kiểm thử Gateway GATT server cùng Sensor client. Xác minh đường truyền dự phòng qua Relay trên ba bo ESP32 thật.",
-    builtLabel: "Đã triển khai", testedLabel: "Đã kiểm thử",
-    wsnBuilt: "Khám phá service, gói dữ liệu 10 byte, GATT Write With Response, đưa dữ liệu callback về loop bằng queue, theo dõi sequence và log Serial CSV.",
-    wsnTested: "Chuyển đường sau ba lần mất phản hồi, thử lại Gateway sau mười lần truyền qua Relay thành công, chặn kết nối và ngắt kết nối bất đồng bộ.",
-    explainTitle: "Tôi có thể giải thích",
-    wsnExplain1: "Vì sao tác vụ BLE blocking không chạy trong callback", wsnExplain2: "Cách sequence number phát hiện mất và trùng gói",
-    wsnExplain3: "Phản hồi theo từng chặng và giao nhận end-to-end", wsnExplain4: "Ngưỡng failover ảnh hưởng hành vi hệ thống thế nào",
-    aesSummary: "Thiết kế lõi AES-128 dạng iterative và pipeline 10 tầng, hoàn tất quy trình Vivado và tích hợp bộ tăng tốc với ARM Cortex-A9.",
-    vivadoLabel: "Quy trình Vivado", resultLabel: "Phạm vi kết quả",
-    aesFlow: "RTL và testbench, mô phỏng hành vi, synthesis, implementation, kiểm tra timing, tạo bitstream, export hardware và kiểm thử trên board.",
-    aesResult: "Xác minh bằng vector FIPS-197. Lõi pipeline nhận một block 128 bit mỗi chu kỳ, tương ứng 12.8 Gbps tại 100 MHz trong mô phỏng RTL.",
-    explainTitle2: "Tôi có thể giải thích", aesExplain1: "Latency và throughput của lõi iterative so với pipeline",
-    aesExplain2: "Kết quả mô phỏng RTL so với hành vi trên board", aesExplain3: "C driver truy cập thanh ghi AXI4-Lite", aesExplain4: "Đánh đổi giữa RTL và HLS trong Vivado",
-    rfidSummary: "Xác định workflow truy cập, quy trình huấn luyện mô hình, kịch bản kiểm thử và tiêu chí nghiệm thu. Lắp ráp phần cứng, tích hợp các thành phần, tái hiện lỗi và xác minh toàn hệ thống.",
-    capabilitiesTitle: "Bộ công cụ Embedded thực tế, được sắp xếp theo cách tôi sử dụng.",
-    backgroundTitle: "Nền tảng kỹ thuật cùng kỷ luật từ trải nghiệm làm việc thực tế.",
-    highlandsText: "Làm việc ở các vị trí nhận order, bán hàng, barista và chăm sóc khách hàng; hỗ trợ vận hành đội nhóm trong giờ cao điểm.",
-    editorText: "Chỉnh sửa khoảng 15 video ngắn và kiểm tra nhịp dựng, phụ đề, âm thanh, hình ảnh cùng chất lượng xuất cuối.",
-    contactTitle: "Bạn đang tìm thực tập sinh Embedded hoặc IoT?",
-    contactText: "Tôi sẵn sàng trình bày kiến trúc, luồng code, cách kiểm thử và giới hạn của các dự án trên."
-  }
-};
-
-const languageButton = document.querySelector('.language-toggle');
-let currentLanguage = 'en';
-languageButton.addEventListener('click', () => {
-  currentLanguage = currentLanguage === 'en' ? 'vi' : 'en';
-  document.documentElement.lang = currentLanguage;
-  document.querySelectorAll('[data-i18n]').forEach((node) => {
-    if (!node.dataset.original) node.dataset.original = node.textContent;
-    node.textContent = currentLanguage === 'vi' ? (translations.vi[node.dataset.i18n] || node.dataset.original) : node.dataset.original;
-  });
-  languageButton.textContent = currentLanguage === 'en' ? 'VI' : 'EN';
-});
-
-const menuButton = document.querySelector('.menu-toggle');
-const nav = document.querySelector('.site-nav');
-menuButton.addEventListener('click', () => {
-  const open = nav.classList.toggle('open');
-  menuButton.setAttribute('aria-expanded', String(open));
-});
-nav.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
-  nav.classList.remove('open');
-  menuButton.setAttribute('aria-expanded', 'false');
+// ----- Tabs -----
+const tabs = document.querySelectorAll('.tab');
+const panels = document.querySelectorAll('.panel');
+function openTab(id) {
+  tabs.forEach((t) => t.classList.toggle('active', t.dataset.tab === id));
+  panels.forEach((p) => p.classList.toggle('active', p.id === id));
+  if (history.replaceState) history.replaceState(null, '', '#' + id);
+}
+tabs.forEach((t) => t.addEventListener('click', () => {
+  openTab(t.dataset.tab);
+  if (window.innerWidth < 980) document.querySelector('.main').scrollIntoView({ behavior: 'smooth' });
 }));
+const start = location.hash.replace('#', '');
+if (document.getElementById(start)) openTab(start);
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.12 });
-document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
-
-const gallery = document.querySelector('#flow-gallery');
-document.querySelector('.gallery-trigger').addEventListener('click', () => gallery.showModal());
-document.querySelector('.dialog-close').addEventListener('click', () => gallery.close());
-gallery.addEventListener('click', (event) => {
-  if (event.target === gallery) gallery.close();
+// ----- Contact form -> email app -----
+document.getElementById('contact-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const f = e.target;
+  const subject = encodeURIComponent('Portfolio contact from ' + f.name.value);
+  const body = encodeURIComponent(f.message.value + '\n\n' + f.name.value + (f.email.value ? ' · ' + f.email.value : ''));
+  window.location.href = 'mailto:menthcstk@gmail.com?subject=' + subject + '&body=' + body;
 });
 
-document.querySelector('#year').textContent = new Date().getFullYear();
+// ----- Gallery -----
+const gallery = document.getElementById('gallery');
+document.querySelector('.gallery-open').addEventListener('click', () => gallery.showModal());
+document.querySelector('#gallery .gallery-close').addEventListener('click', () => gallery.close());
+gallery.addEventListener('click', (e) => { if (e.target === gallery) gallery.close(); });
+
+const layout = document.getElementById('layout');
+document.querySelector('.layout-open').addEventListener('click', () => layout.showModal());
+document.querySelector('.layout-close').addEventListener('click', () => layout.close());
+layout.addEventListener('click', (e) => { if (e.target === layout) layout.close(); });
+
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// ----- Language toggle (EN / VI) -----
+const vi = {
+  downloadCV: 'Tải CV', tabAbout: 'Giới thiệu', tabProjects: 'Dự án', tabResume: 'CV', tabContact: 'Liên hệ',
+  aboutTitle: 'Về tôi',
+  aboutLead: 'Tôi đang theo con đường kỹ sư phần mềm nhúng, thích làm việc với board thật: đi dây, nạp firmware, đọc log và tìm ra vì sao hệ thống không chạy như mong đợi. Tôi quan tâm đến những hệ thống có thể kiểm thử, đo lường và giải thích được.',
+  factLocation: 'Việt Nam', factField: 'Nhúng & IoT', factEdu: 'Kỹ thuật Máy tính',
+  highlightsTitle: 'Điểm nổi bật', metricBoards: 'gói tin đến nơi, 8 giờ thử nghiệm', metricPacket: 'board, tối đa 3 chặng', metricThroughput: 'dòng tiêu thụ khi chạy pin', metricVectors: 'lõi AES tại 100 MHz',
+  experienceTitle: 'Học vấn & Kinh nghiệm', eduText: 'Chương trình Cử nhân · Công nghệ Kỹ thuật Máy tính',
+  akTitle: 'Chương trình đào tạo Nhúng', akText: 'STM32, framework hướng sự kiện AK, FreeRTOS và luyện thuật toán bằng C hằng tuần.',
+  highlandsText: 'Làm việc ở các vị trí nhận order, bán hàng, barista và chăm sóc khách hàng; hỗ trợ vận hành đội nhóm trong giờ cao điểm.',
+  editorText: 'Chỉnh sửa khoảng 15 video ngắn, kiểm tra nhịp dựng, phụ đề, âm thanh, hình ảnh và chất lượng xuất cuối.',
+  skillsTitle: 'Kỹ năng', skLang: 'Ngôn ngữ', skHw: 'Phần cứng & Nền tảng', skProto: 'Nhúng & Giao thức', skTools: 'Công cụ',
+  statsTitle: 'Hoạt động GitHub',
+  projectsTitle: 'Dự án tiêu biểu',
+  picoSummary: 'Mạng BLE gồm 4 board, node cảm biến gửi dữ liệu về Root qua tối đa 3 chặng. Mọi gói tin được xác nhận end-to-end, và node tự tìm đường mới khi mất liên kết hoặc mất node cha.',
+  mmDelivery: 'gói tin đến nơi', mmHop: 'mỗi chặng', mmReroute: 'đổi đường',
+  pico1: 'Root ACK end-to-end, gửi lại với cùng định danh gói, lọc gói trùng',
+  pico2: 'Định tuyến MESH tự phục hồi, chống vòng lặp; 23 lượt thí nghiệm tự động có chèn lỗi',
+  pico3: 'Node tự hàn trên mạch đục lỗ: quang trở, INA219 đo dòng, pin 18650 + TP4056, nguyên mẫu ngủ sâu',
+  viewRepo0: 'Xem repository ↗', viewLayout: 'Xem sơ đồ mạch đục lỗ',
+  proj2Title: 'Đồ án 2 · Mạng cảm biến BLE đa chặng', proj2Text: 'Chuyển mạng từ ESP32 sang Raspberry Pi Pico 2 W: 4 board, 3 chặng, ACK end-to-end, thí nghiệm tự động.', projectsLead: 'Những hệ thống tôi có thể trình bày từ kiến trúc đến kiểm thử: quyết định thiết kế, trường hợp lỗi, phép đo và kết quả trên phần cứng.',
+  wsnSummary: 'Triển khai và kiểm thử firmware Gateway GATT server và Sensor client, xác minh đường truyền dự phòng qua Relay trên ba bo ESP32 thật.',
+  wsn1: 'Gói dữ liệu 10 byte, GATT Write With Response, đưa dữ liệu callback về loop bằng queue',
+  wsn2: 'Chuyển sang Relay sau 3 lần mất phản hồi, thử lại đường trực tiếp sau 10 lần thành công',
+  wsn3: 'Theo dõi sequence để phát hiện mất/trùng gói, log Serial CSV gồm RSSI và PDR',
+  viewRepo: 'Xem repository ↗', viewRepo2: 'Xem repository ↗', viewFlows: 'Xem lưu đồ kỹ thuật',
+  aesSummary: 'Dự án nhóm (5 thành viên): lõi AES-128 dạng iterative và pipeline 10 tầng, hoàn tất quy trình Vivado và tích hợp với ARM Cortex-A9 qua AXI4-Lite.',
+  aes1: 'RTL và testbench, synthesis, implementation, timing, bitstream, kiểm thử trên board',
+  aes2: 'Xác minh bằng vector FIPS-197; thông lượng 12.8 Gbps trong mô phỏng RTL',
+  aes3: 'C driver truy cập thanh ghi bộ tăng tốc qua AXI4-Lite',
+  rfidSummary: 'Xác định workflow truy cập, kịch bản kiểm thử và tiêu chí nghiệm thu. Lắp ráp phần cứng, tích hợp các thành phần, tái hiện lỗi và xác minh các kịch bản truy cập bình thường lẫn bất thường.',
+  resumeTitle: 'CV', downloadCV2: 'Tải PDF', openTab: 'Mở tab mới ↗',
+  contactTitle: 'Liên hệ', contactText: 'Bạn đang tìm thực tập sinh Embedded hoặc IoT? Tôi sẵn sàng trình bày kiến trúc, luồng code, cách kiểm thử và giới hạn của các dự án.',
+  phName: 'Họ tên *', phEmail: 'Email', phMsg: 'Lời nhắn *', send: 'Gửi', formNote: 'Nút này sẽ mở ứng dụng email với nội dung đã soạn sẵn.',
+  footer: 'Xây dựng từ những hệ thống đã kiểm thử, không phải từ khóa.'
+};
+let lang = 'en';
+const langBtn = document.querySelector('.lang-toggle');
+langBtn.addEventListener('click', () => {
+  lang = lang === 'en' ? 'vi' : 'en';
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach((n) => {
+    if (n.dataset.en === undefined) n.dataset.en = n.textContent;
+    n.textContent = lang === 'vi' ? (vi[n.dataset.i18n] || n.dataset.en) : n.dataset.en;
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach((n) => {
+    if (n.dataset.enPh === undefined) n.dataset.enPh = n.placeholder;
+    n.placeholder = lang === 'vi' ? (vi[n.dataset.i18nPh] || n.dataset.enPh) : n.dataset.enPh;
+  });
+  langBtn.textContent = lang === 'en' ? 'Tiếng Việt' : 'English';
+});
