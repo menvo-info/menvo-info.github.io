@@ -2,7 +2,7 @@
 
 Personal portfolio for Embedded Software / IoT internship applications.
 
-Live site: https://menvo-embedded.github.io/
+Live site: https://menvo-info.github.io/
 
 Featured work:
 
